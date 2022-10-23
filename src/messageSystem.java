@@ -1,11 +1,10 @@
 public class messageSystem {
-    private Stack<String> messageStack = new Stack<>();
+    private static Stack<String> messageStack = new Stack<>();
+    private static Queue<String> messageQueue = new Queue<>();
+    private static final int MESSAGE_MAX_LENGTH = 250;
+    private static final int MESSAGE_MIN_LENGTH = 0;
 
-    private Queue<String> messageQueue = new Queue<>();
-    static final int MESSAGE_MAX_LENGTH = 250;
-    static final int MESSAGE_MIN_LENGTH = 0;
-
-    public boolean validMessage(String str) {
+    public static boolean validMessage(String str) {
         return str != null
                 && str.length() != MESSAGE_MIN_LENGTH
                 && str.length() <= MESSAGE_MAX_LENGTH;
@@ -13,7 +12,7 @@ public class messageSystem {
     }
 
     //return new the top message in the stack
-    public void viewMessageStack() {
+    public static void viewMessageStack() {
         if (messageStack.isEmpty()) {
             System.out.println("There are no messages to see!");
         } else {
@@ -34,31 +33,31 @@ public class messageSystem {
     }
 
     //push new message
-    public void newMessageStack(String message) {
+    public static void newMessageStack(String message) {
         if (validMessage(message)) {
             try {
                 messageStack.push(message);
-                System.out.println("message: | " + message + " | added to stack successfully!");
+                System.out.println("Message added: \"" + message + "\"");
             } catch (Exception e) {
                 System.out.println("There seems to be a problem while sending the message.");
             }
         } else {
-            System.out.println("Invalid message format!");
+            System.out.println("Error: Invalid message format! Either its too long, too short or something else");
         }
     }
 
     //reset the message stack
-    public void resetMessageStack() {
+    public static void resetMessageStack() {
         messageStack = new Stack<String>();
     }
 
     //reset the message queue
-    public void resetMessageQueue() {
+    public static void resetMessageQueue() {
         messageQueue = new Queue<String>();
     }
 
     //reset all messages
-    public void resetAll() {
+    public static void resetAll() {
         resetMessageStack();
         resetMessageQueue();
     }
