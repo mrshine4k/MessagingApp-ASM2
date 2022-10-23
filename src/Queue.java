@@ -4,6 +4,10 @@ public class Queue<E> {
     private Node<E> rear;
     private int size;
 
+    public void clear() {
+        this.size = 0;  //similarly to the one used in Sta
+    }
+
     private static class Node<E> {
         private E element;
         private Node<E> next;
