@@ -21,25 +21,25 @@ public class Queue<E> {
 
     public void offer(E element) {
         Node<E> newNode = new Node<E>(element);
-        if(this.head == null) {
+        if (this.head == null) {
             this.head = newNode;
             this.rear = newNode;
         } else {
             Node<E> current = this.head;
-            while(current.next!= null) {
+            while (current.next != null) {
                 current = current.next;
             }
             current.next = newNode;
         }
     }
 
-    public E poll(){
+    public E poll() {
         ensureNotEmpty();
         E element = this.head.element;
-        if(this.size == 1){
+        if (this.size == 1) {
             this.head = null;
             this.rear = null;
-        }else {
+        } else {
             Node<E> next = this.head.next;
             this.head.next = null;
             this.head = next;
@@ -51,8 +51,9 @@ public class Queue<E> {
     public boolean isEmpty() {
         return size == 0;
     }
+
     private void ensureNotEmpty() {
-        if(this.size == 0){
+        if (this.size == 0) {
             throw new IllegalStateException("Queue is empty");
         }
     }
