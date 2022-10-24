@@ -120,8 +120,8 @@ public class messageSystem {
             for (int i = 0; messageQueue.size() >= 1; i++) {
                 inboxQueue.offer(messageQueue.poll());
             }
-            for (int i = 0; inboxQueue.size()){
-
+            for (int i = 0; inboxQueue.size() >= 1; i++){
+                //TODO: adds moving from inbox queue to inbox stack
             }
         } catch (Exception e) {
             System.out.println("There seems to be a problem while trying to send the messages to inbox.");
