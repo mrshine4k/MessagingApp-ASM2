@@ -84,37 +84,51 @@ public class messageSystem {
 
     public static void sendAllMessage() {
         if (messageStack.isEmpty()) {
+            System.out.println("There are no message in store.");
             return;
         }
+        progressPercentage(0, 100);
         transferToQueue();
+        progressPercentage(50, 100);
+        sendMessages();
+//        progressPercentage(100, 100);
+
+
     }
 
     public static void transferToQueue() {
         String[] temp = new String[messageStack.size()];
         try {
-            System.out.println("Moving messages from stack to buffer...");
             for (int i = temp.length - 1; messageStack.size() >= 1; i--) {
                 temp[i] = messageStack.pop();
-                progressPercentage(temp.length - i, temp.length);
             }
-            System.out.println("Moving message to send queue...");
             for (int i = 0; i < temp.length; i++) {
                 messageQueue.offer(temp[i]);
-                progressPercentage(i + 1, temp.length);
             }
-            System.out.println("\nSeeing message in queue...");
             for (int i = 0; messageQueue.size() >= 1; i++) {
                 System.out.println("Message transferred: \"" + messageQueue.poll() + "\"");
             }
         } catch (Exception e) {
-            System.out.println("There seems to be a problem while trying to transfer to message queue line.");
+            System.out.println("There seems to be a problem while trying to transfer to message queue.");
             System.out.println(e);
-            for (int i = 0; messageQueue.size() >= 1; i++) {
-                System.out.println("Message transferred: \"" + messageQueue.poll() + "\"");
-            }
         }
         temp = null;
     }
+
+    public static void sendMessages() {
+        try {
+            for (int i = 0; messageQueue.size() >= 1; i++) {
+                inboxQueue.offer(messageQueue.poll());
+            }
+            for (int i = 0; inboxQueue.size()){
+
+            }
+        } catch (Exception e) {
+            System.out.println("There seems to be a problem while trying to send the messages to inbox.");
+            System.out.println(e);
+        }
+    }
+
 
     public static void progressPercentage(int done, int total) {    //from StackOverflow
         int size = 5;
