@@ -17,7 +17,7 @@ public class messageSystem {
         String[] arr = new String[messageStack.size()];
         for (int i = 0; messageStack.size() >= 1 ; i++) {       //needs to use messageStack size because it goes down in this case.
             arr[i] = messageStack.pop();
-            System.out.println("\""+arr[i]+"\",");
+            System.out.print("\""+arr[i]+"\",");
         }
         for (int i = arr.length - 1; messageStack.size() < arr.length ; i--) {
             messageStack.push(arr[i]);
