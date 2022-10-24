@@ -1,8 +1,11 @@
 
 public class Queue<E> {
     private Node<E> head;
-    private Node<E> rear;
     private int size;
+
+    public int size() {
+        return this.size;
+    }
 
     private static class Node<E> {
         private E element;
@@ -16,14 +19,12 @@ public class Queue<E> {
     public Queue() {
         this.size = 0;
         this.head = null;
-        this.rear = null;
     }
 
     public void offer(E element) {
         Node<E> newNode = new Node<E>(element);
         if (this.head == null) {
             this.head = newNode;
-            this.rear = newNode;
         } else {
             Node<E> current = this.head;
             while (current.next != null) {
@@ -31,6 +32,7 @@ public class Queue<E> {
             }
             current.next = newNode;
         }
+        this.size++;
     }
 
     public E poll() {
@@ -38,7 +40,6 @@ public class Queue<E> {
         E element = this.head.element;
         if (this.size == 1) {
             this.head = null;
-            this.rear = null;
         } else {
             Node<E> next = this.head.next;
             this.head.next = null;
@@ -56,6 +57,15 @@ public class Queue<E> {
         if (this.size == 0) {
             throw new IllegalStateException("Queue is empty");
         }
+    }
+
+    private E getFirst() {
+        return peek();
+    }
+
+    private E peek() {
+        ensureNotEmpty();
+        return this.head.element;
     }
 
 
