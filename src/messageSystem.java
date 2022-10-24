@@ -1,6 +1,6 @@
 public class messageSystem {
-    private static Stack<String> messageStack = new Stack<>();
-    private static Queue<String> messageQueue = new Queue<>();
+    private Stack<String> messageStack = new Stack<>();
+    private Queue<String> messageQueue = new Queue<>();
     private static final int MESSAGE_MAX_LENGTH = 250;
     private static final int MESSAGE_MIN_LENGTH = 0;
 
@@ -12,28 +12,21 @@ public class messageSystem {
     }
 
     //return new the top message in the stack
-    public static void viewMessageStack() {
-        if (messageStack.isEmpty()) {
-            System.out.println("There are no messages to see!");
-        } else {
-            try {
-                String message;
-                Stack<String> preview = messageStack;
-                System.out.print("The message stack are as following: ");
-                for (int i = -1; i <= messageStack.size(); i++) {
-                    //needs i to be -1 so that it runs one more time when size reaches 1
-                    message = preview.peek();
-                    preview.pop();
-                    System.out.print(message + " > ");
-                }
-            } catch (Exception e) {
-                System.out.println("Failed to retrieve messages");
-            }
+    public void viewMessageStack() {
+        System.out.print("Message stack: ");
+        String[] arr = new String[messageStack.size()];
+        for (int i = 0; messageStack.size() >= 1 ; i++) {       //needs to use messageStack size because it goes down in this case.
+            arr[i] = messageStack.pop();
+            System.out.println("\""+arr[i]+"\",");
         }
+        for (int i = arr.length - 1; messageStack.size() < arr.length ; i--) {
+            messageStack.push(arr[i]);
+        }
+        arr = null;
     }
 
     //push new message
-    public static void newMessageStack(String message) {
+    public void newMessageStack(String message) {
         if (validMessage(message)) {
             try {
                 messageStack.push(message);
@@ -47,19 +40,23 @@ public class messageSystem {
     }
 
     //reset the message stack
-    public static void resetMessageStack() {
+    public void resetMessageStack() {
         messageStack = new Stack<String>();
     }
 
     //reset the message queue
-    public static void resetMessageQueue() {
+    public void resetMessageQueue() {
         messageQueue = new Queue<String>();
     }
 
     //reset all messages
-    public static void resetAll() {
+    public void resetAll() {
         resetMessageStack();
         resetMessageQueue();
+    }
+
+    public void view() {
+        System.out.println(messageStack.peek());
     }
 
 }

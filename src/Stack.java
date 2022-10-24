@@ -20,10 +20,10 @@ public class Stack<E> {
     }
 
     public void push(E element) {
-        Node<E> newNode = new Node<>(element);  //create new node
-        newNode.previous = top;                 //set previous node to be the current top node
-        top = newNode;                          //set the newly created node to be the top node
-        this.size++;                            //increment size of the stack
+        Node<E> newNode = new Node<>(element);
+        newNode.previous = top;
+        top = newNode;
+        this.size++;
     }
 
     public E pop() {
@@ -42,15 +42,14 @@ public class Stack<E> {
         }
     }
 
-    public E peek() {
+    public E peek(){
         ensureNonEmpty();
         return this.top.element;
     }
 
-    public Iterator<E> iterator() {
+    public Iterator<E> iterator(){
         return new Iterator<E>() {
             private Node<E> current = top;
-
             @Override
             public boolean hasNext() {
                 return current != null;
@@ -65,17 +64,12 @@ public class Stack<E> {
         };
     }
 
-    public int size() {
+    public int size(){
         return this.size;
     }
 
-    public boolean isEmpty() {
+    public boolean isEmpty(){
         return this.size == 0;
     }
-
-    public void clear() {
-        this.size = 0;  //somehow this is the fastest method for clearing the stack, lol
-    }
-
 
 }

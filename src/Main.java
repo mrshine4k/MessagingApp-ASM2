@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
+    static messageSystem messageSys = new messageSystem();
 
     public static void main(String[] args) throws IOException {
         boolean running = true;
@@ -30,12 +31,13 @@ public class Main {
     public static void newMessage() {
         System.out.println("new message:");
         String message = scanner.nextLine();
-        messageSystem.newMessageStack(message);
+        messageSys.newMessageStack(message);
         enterToContinue();
     }
 
+
     public static void viewMessage() {
-        messageSystem.viewMessageStack();
+        messageSys.viewMessageStack();
         enterToContinue();
     }
 
@@ -47,5 +49,4 @@ public class Main {
             throw new RuntimeException(e);
         }
     }
-
 }
