@@ -5,12 +5,6 @@ public class Stack<E> {
     private Node<E> top;
     private int size;
 
-    public boolean clear() {
-        while(!this.isEmpty()) {
-            this.pop();         //could be bloody slow but meh...
-        }
-        return this.isEmpty();
-    }
 
     private static class Node<E> {
         private E element;
@@ -26,11 +20,30 @@ public class Stack<E> {
         this.top = null;
     }
 
+    public int size() {
+        return this.size;
+    }
+
+    public boolean isEmpty() {
+        return this.size == 0;
+    }
+
+    public void ensureNonEmpty() {
+        if (this.size == 0) {
+            throw new EmptyStackException();
+        }
+    }
+
     public void push(E element) {
         Node<E> newNode = new Node<>(element);
         newNode.previous = top;
         top = newNode;
         this.size++;
+    }
+
+    public E peek() {
+        ensureNonEmpty();
+        return this.top.element;
     }
 
     public E pop() {
@@ -43,15 +56,13 @@ public class Stack<E> {
         return element;
     }
 
-    public void ensureNonEmpty() {
-        if (this.size == 0) {
-            throw new EmptyStackException();
-        }
-    }
 
-    public E peek() {
-        ensureNonEmpty();
-        return this.top.element;
+
+    public boolean clear() {
+        while (!this.isEmpty()) {
+            this.pop();         //could be bloody slow but meh...
+        }
+        return this.isEmpty();
     }
 
 //    public Iterator<E> iterator() {
@@ -72,12 +83,5 @@ public class Stack<E> {
 //        };
 //    }
 
-    public int size() {
-        return this.size;
-    }
-
-    public boolean isEmpty() {
-        return this.size == 0;
-    }
 
 }

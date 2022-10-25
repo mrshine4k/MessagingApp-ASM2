@@ -73,9 +73,9 @@ public class messageSystem {
     }
 
     public static boolean sendAllMessage() {
-        if (messageStack.isEmpty()) {
-            return false;
-        }
+            if (messageStack.isEmpty()) {
+                return false;
+            }
 
         progressPercentage(0, 100);
 
@@ -212,7 +212,13 @@ public class messageSystem {
         }
     }
 
-    public void clearInbox() {
-        System.out.println(inboxStack.clear() ? "Inbox cleared." : "Failed to clear inbox.");
+    public static boolean clearInbox() {
+        if (inboxStack.clear() == true) {
+            System.out.println("Inbox cleared.");
+            return true;
+        } else {
+            System.out.println("Failed to clear inbox.");
+            return false;
+        }
     }
 }

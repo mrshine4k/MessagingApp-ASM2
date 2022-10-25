@@ -1,4 +1,3 @@
-
 public class Queue<E> {
     private Node<E> head;
     private int size;

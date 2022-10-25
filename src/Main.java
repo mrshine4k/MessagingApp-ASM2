@@ -38,9 +38,7 @@ public class Main {
         scanner.nextLine();
 
         switch (key) {
-            case "exit" -> {
-                return false;
-            }
+            case "exit" -> {return false;}
             case "new" -> newMessage();
             case "view" -> viewMessage();
             case "removeLast" -> removeLastMessage();
