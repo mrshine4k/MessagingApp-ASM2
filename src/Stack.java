@@ -42,14 +42,15 @@ public class Stack<E> {
         }
     }
 
-    public E peek(){
+    public E peek() {
         ensureNonEmpty();
         return this.top.element;
     }
 
-    public Iterator<E> iterator(){
+    public Iterator<E> iterator() {
         return new Iterator<E>() {
             private Node<E> current = top;
+
             @Override
             public boolean hasNext() {
                 return current != null;
@@ -64,11 +65,11 @@ public class Stack<E> {
         };
     }
 
-    public int size(){
+    public int size() {
         return this.size;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return this.size == 0;
     }
 

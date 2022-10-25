@@ -14,19 +14,20 @@ public class Main {
     }
 
     public static boolean menu() {
-        String end = "=".repeat(50);
-        String head = "=".repeat(end.length() - 24);
-        String div = "-".repeat(50);
-        System.out.println("Command |======| Usages " + head);
-        System.out.println("new            | New message.");
-        System.out.println("view           | View current messages.");
-        System.out.println("removeLast     | Remove last message.");
-        System.out.println("send           | Send all messages to inbox below.");
+        int barLength = 47;
+        String end = "=".repeat(barLength);
+        String head = "=".repeat(barLength - 24);
+        String div = "-".repeat(barLength);
+        System.out.println("Options |===| Usages " + head);
+        System.out.println("new         | New message.");
+        System.out.println("view        | View current messages.");
+        System.out.println("removeLast  | Remove last message.");
+        System.out.println("send        | Send all messages to inbox below.");
         System.out.println(div);
-        System.out.println("inbox          | View sent message.");
-        System.out.println("clearInbox     | Clear all inboxes.");
-        System.out.println("clearLastInbox | Clear the latest inbox.");
-        System.out.println("exit           | Exit.");
+        System.out.println("inbox       | View sent message.");
+        System.out.println("clearInbox  | Clear all inboxes.");
+        System.out.println("clearLatest | Clear the latest inbox.");
+        System.out.println("exit        | Exit.");
         System.out.println(end);
         System.out.print("Enter option to continue: ");
 
@@ -34,19 +35,32 @@ public class Main {
         scanner.nextLine();
 
         switch (key) {
-            case "exit" -> { return false; }
+            case "exit" -> {
+                return false;
+            }
             case "new" -> newMessage();
             case "view" -> viewMessage();
             case "removeLast" -> removeLastMessage();
             case "send" -> sendMessage();
             case "inbox" -> checkInbox();
+            case "clearInbox" -> clearInbox();
+            case "clearLatest" -> clearLatestInbox();
             default -> System.out.println("Invalid input, please try again.");
         }
         return true;
     }
 
-    private static void checkInbox() {
+    private static void clearLatestInbox() {
+        messageSys.clearLatestInbox();
+    }
 
+    private static void clearInbox() {
+//        messageSys.clearInbox();
+    }
+
+    private static void checkInbox() {
+        messageSys.inbox();
+        enterToContinue();
     }
 
     private static void sendMessage() {
@@ -71,7 +85,9 @@ public class Main {
     public static void newMessage() {
         System.out.print("new message: ");
         String message = scanner.nextLine();
-        messageSys.newMessageStack(message);
+        if (messageSys.newMessageStack(message)) {
+            System.out.println("There seems to be a problem while sending the message.");
+        }
         enterToContinue();
     }
 

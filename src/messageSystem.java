@@ -1,15 +1,10 @@
-import java.lang.reflect.Array;
-import java.util.Arrays;
-
 public class messageSystem {
-    private static Stack<String> messageStack = new Stack<>();
-    private static Queue<String> messageQueue = new Queue<>();
-
-    private static Stack<String> inboxStack = new Stack<>();
-    private static Queue<String> inboxQueue = new Queue<>();
-
     private static final int MESSAGE_MAX_LENGTH = 250;
     private static final int MESSAGE_MIN_LENGTH = 0;
+    private static Stack<String> messageStack = new Stack<>();
+    private static Queue<String> messageQueue = new Queue<>();
+    private static Stack<String> inboxStack = new Stack<>();
+    private static Queue<String> inboxQueue = new Queue<>();
 
     public static boolean validMessage(String str) {
         return str != null
@@ -18,52 +13,20 @@ public class messageSystem {
         //recommended by the IDE to shorten the if(s). Makes it harder to read but ok...
     }
 
-    //return new the top message in the stack
-    public void viewMessageStack() {
-        if (messageStack.isEmpty()) {
-            System.out.println("Message stack is empty.");
-            return;
-        }
-        System.out.print("Message stack: ");
-        String[] temp = new String[messageStack.size()];
-        for (int i = 0; messageStack.size() >= 1; i++) {       //needs to use messageStack size because it goes down in this case.
-            temp[i] = messageStack.pop();
-            System.out.print("\"" + temp[i] + (messageStack.size() != 0 ? "\", " : "\".\n"));   //ends with "." instead of "," yes this is unnecessary.
-        }
-        for (int i = temp.length - 1; messageStack.size() < temp.length; i--) {
-            messageStack.push(temp[i]);
-        }
-        temp = null;
-    }
-
     //push new message
-    public static void newMessageStack(String message) {
+    public static boolean newMessageStack(String message) {
         if (validMessage(message)) {
             try {
                 messageStack.push(message);
                 System.out.println("Message added: \"" + message + "\"");
+                return true;
             } catch (Exception e) {
-                System.out.println("There seems to be a problem while sending the message.");
+                return false;
             }
         } else {
-            System.out.println("Error: Invalid message format! Either its too long, too short or something else");
+            System.out.println("Error: Invalid message format!");
         }
-    }
-
-    //reset the message stack
-    public static void resetMessageStack() {
-        messageStack = new Stack<String>();
-    }
-
-    //reset the message queue
-    public static void resetMessageQueue() {
-        messageQueue = new Queue<String>();
-    }
-
-    //reset all messages
-    public static void resetAll() {
-        resetMessageStack();
-        resetMessageQueue();
+        return false;
     }
 
     public static boolean removePreview() {
@@ -76,61 +39,82 @@ public class messageSystem {
         }
     }
 
-    public static void removeLastMessageStack() {
-        if (!messageQueue.isEmpty()) {
+    public static boolean removeLastMessageStack() {
+        if (!messageStack.isEmpty()) {
             System.out.println("Removed message: " + messageStack.pop());
+            return true;
+        } else {
+            System.out.println("There are no message to remove!");
+            return false;
         }
     }
 
-    public static void sendAllMessage() {
+    public static boolean sendAllMessage() {
         if (messageStack.isEmpty()) {
-            System.out.println("There are no message in store.");
-            return;
+            return false;
         }
+
         progressPercentage(0, 100);
-        transferToQueue();
-        progressPercentage(50, 100);
-        sendMessages();
-//        progressPercentage(100, 100);
 
+        if (transferToQueue()) {
+            progressPercentage(33, 100);
 
+            if (sendMessages()) {
+                progressPercentage(66, 100);
+
+                if (addToInbox()) {
+                    progressPercentage(100, 100);
+                    System.out.println("Sent all messages successfully! Check the inbox for messages");
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
-    public static void transferToQueue() {
-        String[] temp = new String[messageStack.size()];
+    //transferring messages from messsage stack to message queue
+    public static boolean transferToQueue() {
         try {
-            for (int i = temp.length - 1; messageStack.size() >= 1; i--) {
-                temp[i] = messageStack.pop();
+            for (int i = 0; messageStack.size() >= 1; i++) {
+                messageQueue.offer(messageStack.pop());
             }
-            for (int i = 0; i < temp.length; i++) {
-                messageQueue.offer(temp[i]);
-            }
-            for (int i = 0; messageQueue.size() >= 1; i++) {
-                System.out.println("Message transferred: \"" + messageQueue.poll() + "\"");
-            }
+            return true;
         } catch (Exception e) {
             System.out.println("There seems to be a problem while trying to transfer to message queue.");
             System.out.println(e);
         }
-        temp = null;
+        return false;
     }
 
-    public static void sendMessages() {
+    //sends message from message queue to inbox queue
+    public static boolean sendMessages() {
         try {
             for (int i = 0; messageQueue.size() >= 1; i++) {
                 inboxQueue.offer(messageQueue.poll());
             }
-            for (int i = 0; inboxQueue.size() >= 1; i++){
-                //TODO: adds moving from inbox queue to inbox stack
-            }
+            return true;
         } catch (Exception e) {
-            System.out.println("There seems to be a problem while trying to send the messages to inbox.");
+            System.out.println("There seems to be a problem while trying to send the messages to inbox queue.");
             System.out.println(e);
+        }
+        return false;
+    }
+
+    //move all messages from inbox queue to inbox stack
+    public static boolean addToInbox() {
+        try {
+            for (int i = 0; inboxQueue.size() >= 1; i++) {
+                inboxStack.push(inboxQueue.poll());
+            }
+            return true;
+        } catch (Exception e) {
+            System.out.println("There seems to be a problem while trying to move the messages to the inbox.");
+            System.out.println(e);
+            return false;
         }
     }
 
-
-    public static void progressPercentage(int done, int total) {    //from StackOverflow
+    public static void progressPercentage(int done, int total) {    //from StackOverflow, used to display progress
         int size = 5;
         String iconLeftBoundary = "[";
         String iconDone = "=";
@@ -160,5 +144,49 @@ public class messageSystem {
         }
     }
 
+    //return new the top message in the stack
+    public static boolean viewMessageStack() {
+        if (messageStack.isEmpty()) {
+            System.out.println("Message stack is empty.");
+            return false;
+        }
+        try {
+            System.out.print("Message stack: ");
+            String[] temp = new String[messageStack.size()];
+            for (int i = 0; messageStack.size() >= 1; i++) {//needs to use messageStack size because it goes down in this case.
+                temp[i] = messageStack.pop();   //getting all element out to an array to present it then push all back in later.
+                System.out.print("\"" + temp[i] + (messageStack.size() != 0 ? "\", " : "\".\n"));
+                //ends with "." instead of "," yes this is unnecessary, only a formatting thing.
+            }
+            for (int i = temp.length - 1; messageStack.size() < temp.length; i--) {
+                messageStack.push(temp[i]); //pushing all back inside
+            }
+            return true;
+        } catch (Exception e) {
+            System.out.println("There seems to be a problem while trying to view the message stack.");
+            System.out.println(e);
+            return false;
+        }
+    }
 
+    public static boolean inbox() {
+        String[] temp = new String[inboxStack.size()];
+        System.out.printf(inboxStack.isEmpty() ? "Empty inbox.\n" : "Inbox (%d messages):\n", inboxStack.size());
+
+        try {
+            for (int i = 0; inboxStack.size() >= 1; i++) {
+                temp[i] = inboxStack.pop();
+                System.out.print("\"" + temp[i] + (inboxStack.size() != 0 ? "\", " : "\".\n")); //reused from above
+            }
+            return true;
+        } catch (Exception e) {
+            System.out.println("There seems to be a problem while trying to view the inbox.");
+            System.out.println(e);
+            return false;
+        }
+    }
+
+    public void clearLatestInbox() {
+
+    }
 }
