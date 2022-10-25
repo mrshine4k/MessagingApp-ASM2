@@ -29,24 +29,47 @@ public class messageSystem {
         return false;
     }
 
-    public static boolean removePreview() {
-        if (messageStack.isEmpty()) {
-            System.out.println("There are no message in store.");
+    //central removePreview for stacks
+    public static boolean removePreview(Stack<String> stack) {
+        if (stack.isEmpty()) {
+            System.out.println("There are no message in here.");
             return false;
         } else {
-            System.out.println("Removing last message: \"" + messageStack.peek() + "\".");
+            System.out.println("Removing latest message: \"" + stack.peek() + "\".");
             return true;
         }
     }
 
-    public static boolean removeLastMessageStack() {
-        if (!messageStack.isEmpty()) {
-            System.out.println("Removed message: " + messageStack.pop());
-            return true;
-        } else {
-            System.out.println("There are no message to remove!");
-            return false;
+    public static boolean removeMessagePreview() {
+        return removePreview(messageStack);
+    }
+
+    public static boolean removeInboxPreview() {
+        return removePreview(inboxStack);
+    }
+
+    //central removeLast for stacks
+    public static boolean removeLast(Stack<String> stack) {
+        if (!stack.isEmpty()) {
+            try {
+                System.out.println("Removed message: " + stack.pop());
+                return true;
+            } catch (Exception e) {
+                System.out.println("Error happened: " + e.getMessage());
+                return false;
+            }
         }
+        System.out.println("There are no message to remove!");
+        return false;
+
+    }
+
+    public static void removeLastMessageStack() {
+        removeLast(messageStack);
+    }
+
+    public static void removeLastInboxStack() {
+        removeLast(inboxStack);
     }
 
     public static boolean sendAllMessage() {
@@ -178,6 +201,9 @@ public class messageSystem {
                 temp[i] = inboxStack.pop();
                 System.out.print("\"" + temp[i] + (inboxStack.size() != 0 ? "\", " : "\".\n")); //reused from above
             }
+            for (int i = temp.length - 1; inboxStack.size() < temp.length; i--) {
+                inboxStack.push(temp[i]); //pushing all back inside
+            }
             return true;
         } catch (Exception e) {
             System.out.println("There seems to be a problem while trying to view the inbox.");
@@ -186,7 +212,6 @@ public class messageSystem {
         }
     }
 
-    public void clearLatestInbox() {
-
+    public void clearInbox() {
     }
 }

@@ -6,11 +6,6 @@ import java.io.PrintStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class messageSystemTest {
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
-    private final PrintStream originalOut = System.out;
-    private final PrintStream originalErr = System.err;
-
 
     @Test
     void validMessage() {
@@ -21,28 +16,18 @@ class messageSystemTest {
         assertTrue(messageSystem.validMessage(message));
     }
 
-//    @Test
-//    void newMessageStack() {
-//        String tooLong = "a".repeat(300);
-//        String message = "hello there.";
-//        (messageSystem.newMessageStack(tooLong));
-//        assertTrue(messageSystem.newMessageStack(message));
-//    }
-
     @Test
-    void resetMessageStack() {
-    }
-
-    @Test
-    void resetMessageQueue() {
-    }
-
-    @Test
-    void resetAll() {
+    void newMessageStack() {
+        String tooLong = "a".repeat(300);
+        String message = "hello there.";
+        assertFalse(messageSystem.newMessageStack(null));
+        assertFalse(messageSystem.newMessageStack(tooLong));
+        assertTrue(messageSystem.newMessageStack(message));
     }
 
     @Test
     void viewLast() {
+
     }
 
     @Test
@@ -55,5 +40,53 @@ class messageSystemTest {
 
     @Test
     void transferToQueue() {
+    }
+
+    @Test
+    void testValidMessage() {
+    }
+
+    @Test
+    void testNewMessageStack() {
+    }
+
+    @Test
+    void removePreview() {
+    }
+
+    @Test
+    void testRemoveLastMessageStack() {
+    }
+
+    @Test
+    void testSendAllMessage() {
+    }
+
+    @Test
+    void testTransferToQueue() {
+    }
+
+    @Test
+    void sendMessages() {
+    }
+
+    @Test
+    void addToInbox() {
+    }
+
+    @Test
+    void progressPercentage() {
+    }
+
+    @Test
+    void viewMessageStack() {
+    }
+
+    @Test
+    void inbox() {
+    }
+
+    @Test
+    void clearLatestInbox() {
     }
 }

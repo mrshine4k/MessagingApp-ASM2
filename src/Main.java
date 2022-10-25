@@ -11,6 +11,7 @@ public class Main {
             running = menu();
         } while (running);
         scanner.close();
+        //Running thingy
     }
 
     public static boolean menu() {
@@ -50,12 +51,8 @@ public class Main {
         return true;
     }
 
-    private static void clearLatestInbox() {
-        messageSys.clearLatestInbox();
-    }
-
     private static void clearInbox() {
-//        messageSys.clearInbox();
+        messageSys.clearInbox();
     }
 
     private static void checkInbox() {
@@ -69,17 +66,30 @@ public class Main {
     }
 
     private static void removeLastMessage() {
-        if (messageSys.removePreview()) {
-            System.out.println("Confirm deletion of last message? (y/n).");
+        if (messageSys.removeMessagePreview()) {
+            System.out.println("Confirm deletion of latest message? (y/n).");
             String key = scanner.next();
             scanner.nextLine();
-            if (key.equals("y")) {
-                messageSys.removeLastMessageStack();
-            } else {
+            if (key.equals("n")) {
                 System.out.println("Delete cancelled.");
+            } else if (key.equals("y")) {
+                messageSys.removeLastMessageStack();
             }
         }
         enterToContinue();
+    }
+
+    private static void clearLatestInbox() {
+        if (messageSys.removeInboxPreview()) {
+            System.out.println("Confirm deletion of latest message? (y/n).");
+            String key = scanner.next();
+            scanner.nextLine();
+            if (key.equals("n")) {
+                System.out.println("Delete cancelled.");
+            } else if (key.equals("y")) {
+                messageSys.removeLastInboxStack();
+            }
+        }
     }
 
     public static void newMessage() {
