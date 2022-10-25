@@ -1,9 +1,16 @@
 import java.util.EmptyStackException;
-import java.util.Iterator;
+//import java.util.Iterator;
 
 public class Stack<E> {
     private Node<E> top;
     private int size;
+
+    public boolean clear() {
+        while(!this.isEmpty()) {
+            this.pop();         //could be bloody slow but meh...
+        }
+        return this.isEmpty();
+    }
 
     private static class Node<E> {
         private E element;
@@ -47,23 +54,23 @@ public class Stack<E> {
         return this.top.element;
     }
 
-    public Iterator<E> iterator() {
-        return new Iterator<E>() {
-            private Node<E> current = top;
-
-            @Override
-            public boolean hasNext() {
-                return current != null;
-            }
-
-            @Override
-            public E next() {
-                E element = current.element;
-                this.current = this.current.previous;
-                return element;
-            }
-        };
-    }
+//    public Iterator<E> iterator() {
+//        return new Iterator<E>() {
+//            private Node<E> current = top;
+//
+//            @Override
+//            public boolean hasNext() {
+//                return current != null;
+//            }
+//
+//            @Override
+//            public E next() {
+//                E element = current.element;
+//                this.current = this.current.previous;
+//                return element;
+//            }
+//        };
+//    }
 
     public int size() {
         return this.size;

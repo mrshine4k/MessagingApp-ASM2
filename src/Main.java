@@ -15,10 +15,12 @@ public class Main {
     }
 
     public static boolean menu() {
+
         int barLength = 47;
         String end = "=".repeat(barLength);
         String head = "=".repeat(barLength - 24);
         String div = "-".repeat(barLength);
+
         System.out.println("Options |===| Usages " + head);
         System.out.println("new         | New message.");
         System.out.println("view        | View current messages.");
@@ -27,7 +29,7 @@ public class Main {
         System.out.println(div);
         System.out.println("inbox       | View sent message.");
         System.out.println("clearInbox  | Clear all inboxes.");
-        System.out.println("clearLatest | Clear the latest inbox.");
+        System.out.println("clearFirst  | Clear the first inbox.");
         System.out.println("exit        | Exit.");
         System.out.println(end);
         System.out.print("Enter option to continue: ");
@@ -45,7 +47,7 @@ public class Main {
             case "send" -> sendMessage();
             case "inbox" -> checkInbox();
             case "clearInbox" -> clearInbox();
-            case "clearLatest" -> clearLatestInbox();
+            case "clearFirst" -> clearFirstInbox();
             default -> System.out.println("Invalid input, please try again.");
         }
         return true;
@@ -79,7 +81,7 @@ public class Main {
         enterToContinue();
     }
 
-    private static void clearLatestInbox() {
+    private static void clearFirstInbox() {
         if (messageSys.removeInboxPreview()) {
             System.out.println("Confirm deletion of latest message? (y/n).");
             String key = scanner.next();
@@ -87,7 +89,7 @@ public class Main {
             if (key.equals("n")) {
                 System.out.println("Delete cancelled.");
             } else if (key.equals("y")) {
-                messageSys.removeLastInboxStack();
+                messageSys.removeFirstInboxStack();
             }
         }
     }
@@ -95,7 +97,7 @@ public class Main {
     public static void newMessage() {
         System.out.print("new message: ");
         String message = scanner.nextLine();
-        if (messageSys.newMessageStack(message)) {
+        if (!messageSys.newMessageStack(message)) {
             System.out.println("There seems to be a problem while sending the message.");
         }
         enterToContinue();

@@ -68,7 +68,7 @@ public class messageSystem {
         removeLast(messageStack);
     }
 
-    public static void removeLastInboxStack() {
+    public static void removeFirstInboxStack() {
         removeLast(inboxStack);
     }
 
@@ -213,5 +213,6 @@ public class messageSystem {
     }
 
     public void clearInbox() {
+        System.out.println(inboxStack.clear() ? "Inbox cleared." : "Failed to clear inbox.");
     }
 }
